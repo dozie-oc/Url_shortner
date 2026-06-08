@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SnapLink – The fastest, smartest URL shortener. Shorten, track, and share links in seconds. Powered by Flask, FastAPI, and PostgreSQL." />
+  <title>SnapLink – Smart URL Shortener</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── BACKGROUND ORBS ── -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ── NAVBAR ── -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="logo" aria-label="SnapLink Home">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">Snap<span class="logo-accent">Link</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#stats" class="nav-link">Stats</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="#" class="btn btn-ghost" id="btn-login">Log In</a>
+        <a href="#" class="btn btn-primary" id="btn-signup">Get Started Free</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <!-- mobile menu -->
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <a href="#features" class="mobile-link">Features</a>
+      <a href="#how-it-works" class="mobile-link">How It Works</a>
+      <a href="#stats" class="mobile-link">Stats</a>
+      <a href="#pricing" class="mobile-link">Pricing</a>
+      <a href="#" class="btn btn-ghost mobile-action">Log In</a>
+      <a href="#" class="btn btn-primary mobile-action">Get Started Free</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── HERO ── -->
+    <section class="hero" id="hero" aria-labelledby="hero-heading">
+      <div class="container hero-inner">
+        <div class="hero-badge reveal">
+          <span class="badge-dot"></span>
+          <span>Now with AI-powered link analytics</span>
+        </div>
+        <h1 class="hero-title reveal" id="hero-heading">
+          Shorten. Share.<br />
+          <span class="gradient-text">Track Everything.</span>
+        </h1>
+        <p class="hero-sub reveal">
+          Transform long, messy URLs into clean, powerful short links.<br />
+          Built on <strong>Flask</strong>, <strong>FastAPI</strong> &amp; <strong>PostgreSQL</strong> for blazing-fast performance.
+        </p>
+
+        <!-- SHORTENER WIDGET -->
+        <div class="shortener-card reveal" id="shortener-widget">
+          <div class="input-row">
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true">🔗</span>
+              <input
+                type="url"
+                id="url-input"
+                class="url-input"
+                placeholder="Paste your long URL here…"
+                aria-label="Enter URL to shorten"
+                autocomplete="off"
+              />
+            </div>
+            <div class="options-row">
+              <div class="custom-slug-wrap">
+                <span class="slug-prefix">snaplink.io/</span>
+                <input
+                  type="text"
+                  id="custom-slug"
+                  class="slug-input"
+                  placeholder="custom-alias (optional)"
+                  aria-label="Custom alias"
+                  maxlength="30"
+                />
+              </div>
+              <select id="expiry-select" class="expiry-select" aria-label="Link expiry">
+                <option value="">No Expiry</option>
+                <option value="1d">1 Day</option>
+                <option value="7d">7 Days</option>
+                <option value="30d">30 Days</option>
+              </select>
+            </div>
+            <button id="shorten-btn" class="btn btn-primary btn-shorten" aria-label="Shorten URL">
+              <span class="btn-text">Shorten URL</span>
+              <span class="btn-loader" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <!-- RESULT -->
+          <div class="result-wrap" id="result-wrap" aria-live="polite" hidden>
+            <div class="result-inner">
+              <div class="result-info">
+                <span class="result-label">Your short link is ready!</span>
+                <a href="#" id="result-link" class="result-link" target="_blank" rel="noopener"></a>
+              </div>
+              <div class="result-actions">
+                <button id="copy-btn" class="btn btn-outline btn-sm" aria-label="Copy link">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Copy
+                </button>
+                <button id="qr-btn" class="btn btn-outline btn-sm" aria-label="Show QR code">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/></svg>
+                  QR Code
+                </button>
+              </div>
+            </div>
+            <div class="qr-wrap" id="qr-wrap" hidden>
+              <canvas id="qr-canvas" width="120" height="120" aria-label="QR code for your short link"></canvas>
+              <button id="download-qr" class="btn btn-ghost btn-sm">Download QR</button>
+            </div>
+          </div>
+
+          <!-- ERROR -->
+          <div class="error-wrap" id="error-wrap" aria-live="assertive" hidden>
+            <span class="error-icon">⚠️</span>
+            <span id="error-msg"></span>
+          </div>
+        </div>
+
+        <p class="hero-note reveal">No credit card required · Free forever plan · 1 000 links/month</p>
+
+        <!-- HERO DEMO PREVIEW -->
+        <div class="browser-mock reveal" aria-hidden="true">
+          <div class="browser-bar">
+            <span class="browser-dot dot-r"></span>
+            <span class="browser-dot dot-y"></span>
+            <span class="browser-dot dot-g"></span>
+            <div class="browser-url">snaplink.io/dashboard</div>
+          </div>
+          <div class="browser-body">
+            <div class="mock-sidebar">
+              <div class="mock-nav-item active"></div>
+              <div class="mock-nav-item"></div>
+              <div class="mock-nav-item"></div>
+              <div class="mock-nav-item"></div>
+            </div>
+            <div class="mock-content">
+              <div class="mock-header-row">
+                <div class="mock-title-block"></div>
+                <div class="mock-btn-block"></div>
+              </div>
+              <div class="mock-cards">
+                <div class="mock-stat-card"><div class="msc-num"></div><div class="msc-label"></div></div>
+                <div class="mock-stat-card"><div class="msc-num"></div><div class="msc-label"></div></div>
+                <div class="mock-stat-card"><div class="msc-num"></div><div class="msc-label"></div></div>
+              </div>
+              <div class="mock-chart">
+                <div class="mock-bar" style="height:40%"></div>
+                <div class="mock-bar" style="height:65%"></div>
+                <div class="mock-bar" style="height:50%"></div>
+                <div class="mock-bar" style="height:80%"></div>
+                <div class="mock-bar" style="height:60%"></div>
+                <div class="mock-bar" style="height:90%"></div>
+                <div class="mock-bar" style="height:70%"></div>
+              </div>
+              <div class="mock-link-row"></div>
+              <div class="mock-link-row"></div>
+              <div class="mock-link-row short"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TRUSTED BY ── -->
+    <section class="trusted" aria-label="Trusted by">
+      <div class="container">
+        <p class="trusted-label">Trusted by teams at</p>
+        <div class="brand-strip">
+          <div class="brand-item">Vercel</div>
+          <div class="brand-item">Stripe</div>
+          <div class="brand-item">Notion</div>
+          <div class="brand-item">Linear</div>
+          <div class="brand-item">Figma</div>
+          <div class="brand-item">Supabase</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FEATURES ── -->
+    <section class="features" id="features" aria-labelledby="features-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Features</span>
+          <h2 id="features-heading">Everything you need to<br /><span class="gradient-text">own your links</span></h2>
+          <p class="section-sub">More than just a shortener — a full link management platform.</p>
+        </div>
+        <div class="features-grid">
+
+          <article class="feature-card reveal" id="feat-analytics">
+            <div class="feature-icon-wrap" style="--icon-color: #7c3aed">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3>Real-Time Analytics</h3>
+            <p>Track clicks, geography, devices, referrers, and more in a beautiful live dashboard. No lag, no limits.</p>
+          </article>
+
+          <article class="feature-card reveal" id="feat-custom">
+            <div class="feature-icon-wrap" style="--icon-color: #0ea5e9">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <h3>Custom Aliases</h3>
+            <p>Brand your links with memorable slugs. <em>snaplink.io/launch</em> beats a random string every time.</p>
+          </article>
+
+          <article class="feature-card reveal" id="feat-qr">
+            <div class="feature-icon-wrap" style="--icon-color: #10b981">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="19" y="19" width="2" height="2"/></svg>
+            </div>
+            <h3>QR Code Generator</h3>
+            <p>Instantly generate QR codes for any link. Download as PNG and embed in print, email, or social media.</p>
+          </article>
+
+          <article class="feature-card reveal" id="feat-expiry">
+            <div class="feature-icon-wrap" style="--icon-color: #f59e0b">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3>Link Expiry</h3>
+            <p>Set time-limited links for promotions, events, or access control. Auto-expire after 1, 7, or 30 days.</p>
+          </article>
+
+          <article class="feature-card reveal" id="feat-api">
+            <div class="feature-icon-wrap" style="--icon-color: #ef4444">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <h3>REST &amp; FastAPI</h3>
+            <p>Full-featured API built with FastAPI &amp; Flask. OpenAPI docs included. Integrate in minutes.</p>
+          </article>
+
+          <article class="feature-card reveal" id="feat-secure">
+            <div class="feature-icon-wrap" style="--icon-color: #8b5cf6">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Password Protection</h3>
+            <p>Lock sensitive links behind a password. Perfect for internal documents, client portals, or beta access.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── STATS ── -->
+    <section class="stats" id="stats" aria-labelledby="stats-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">By the Numbers</span>
+          <h2 id="stats-heading">Powering links at <span class="gradient-text">global scale</span></h2>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card reveal" id="stat-links">
+            <div class="stat-num" data-target="50000000">0</div>
+            <div class="stat-suffix">+</div>
+            <div class="stat-label">Links Shortened</div>
+          </div>
+          <div class="stat-card reveal" id="stat-clicks">
+            <div class="stat-num" data-target="2400000000">0</div>
+            <div class="stat-suffix">+</div>
+            <div class="stat-label">Total Clicks Tracked</div>
+          </div>
+          <div class="stat-card reveal" id="stat-users">
+            <div class="stat-num" data-target="120000">0</div>
+            <div class="stat-suffix">+</div>
+            <div class="stat-label">Active Users</div>
+          </div>
+          <div class="stat-card reveal" id="stat-uptime">
+            <div class="stat-num" data-target="99">0</div>
+            <div class="stat-suffix">.99%</div>
+            <div class="stat-label">Uptime SLA</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HOW IT WORKS ── -->
+    <section class="how" id="how-it-works" aria-labelledby="how-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">How It Works</span>
+          <h2 id="how-heading">Three steps to a <span class="gradient-text">smarter link</span></h2>
+        </div>
+        <div class="steps">
+          <div class="step reveal" id="step-1">
+            <div class="step-num">01</div>
+            <div class="step-body">
+              <h3>Paste your URL</h3>
+              <p>Drop any link — no matter how long — into the input box. We'll handle the rest instantly.</p>
+            </div>
+          </div>
+          <div class="step-arrow" aria-hidden="true">→</div>
+          <div class="step reveal" id="step-2">
+            <div class="step-num">02</div>
+            <div class="step-body">
+              <h3>Customize &amp; Shorten</h3>
+              <p>Add a custom alias, set an expiry date, or generate a QR code — all before you hit shorten.</p>
+            </div>
+          </div>
+          <div class="step-arrow" aria-hidden="true">→</div>
+          <div class="step reveal" id="step-3">
+            <div class="step-num">03</div>
+            <div class="step-body">
+              <h3>Share &amp; Track</h3>
+              <p>Share your link anywhere. Watch real-time analytics roll in from your personal dashboard.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PRICING ── -->
+    <section class="pricing" id="pricing" aria-labelledby="pricing-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Pricing</span>
+          <h2 id="pricing-heading">Simple, <span class="gradient-text">transparent pricing</span></h2>
+          <p class="section-sub">Start free. Scale when you need to.</p>
+        </div>
+        <div class="toggle-wrap reveal">
+          <span class="toggle-label">Monthly</span>
+          <button class="toggle-btn" id="billing-toggle" role="switch" aria-checked="false" aria-label="Toggle annual billing">
+            <span class="toggle-knob"></span>
+          </button>
+          <span class="toggle-label">Annual <span class="toggle-save">Save 30%</span></span>
+        </div>
+        <div class="pricing-grid">
+
+          <article class="price-card reveal" id="plan-free">
+            <div class="plan-name">Free</div>
+            <div class="plan-price">
+              <span class="price-currency">$</span>
+              <span class="price-amount" data-monthly="0" data-annual="0">0</span>
+              <span class="price-period">/mo</span>
+            </div>
+            <ul class="plan-features" aria-label="Free plan features">
+              <li><span class="check">✓</span> 1 000 links/month</li>
+              <li><span class="check">✓</span> Basic analytics</li>
+              <li><span class="check">✓</span> QR code generator</li>
+              <li><span class="check">✓</span> 30-day link history</li>
+              <li class="dim"><span class="cross">✗</span> Custom domains</li>
+              <li class="dim"><span class="cross">✗</span> API access</li>
+            </ul>
+            <a href="#" class="btn btn-outline btn-block" id="cta-free">Get started free</a>
+          </article>
+
+          <article class="price-card price-card--featured reveal" id="plan-pro">
+            <div class="plan-badge">Most Popular</div>
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">
+              <span class="price-currency">$</span>
+              <span class="price-amount" data-monthly="9" data-annual="6">9</span>
+              <span class="price-period">/mo</span>
+            </div>
+            <ul class="plan-features" aria-label="Pro plan features">
+              <li><span class="check">✓</span> Unlimited links</li>
+              <li><span class="check">✓</span> Advanced analytics</li>
+              <li><span class="check">✓</span> Custom aliases</li>
+              <li><span class="check">✓</span> Link expiry</li>
+              <li><span class="check">✓</span> Password protection</li>
+              <li><span class="check">✓</span> API access</li>
+            </ul>
+            <a href="#" class="btn btn-primary btn-block" id="cta-pro">Start 14-day free trial</a>
+          </article>
+
+          <article class="price-card reveal" id="plan-team">
+            <div class="plan-name">Team</div>
+            <div class="plan-price">
+              <span class="price-currency">$</span>
+              <span class="price-amount" data-monthly="29" data-annual="20">29</span>
+              <span class="price-period">/mo</span>
+            </div>
+            <ul class="plan-features" aria-label="Team plan features">
+              <li><span class="check">✓</span> Everything in Pro</li>
+              <li><span class="check">✓</span> Custom domain</li>
+              <li><span class="check">✓</span> 10 team members</li>
+              <li><span class="check">✓</span> SSO / SAML</li>
+              <li><span class="check">✓</span> Priority support</li>
+              <li><span class="check">✓</span> Audit logs</li>
+            </ul>
+            <a href="#" class="btn btn-outline btn-block" id="cta-team">Start 14-day free trial</a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA BANNER ── -->
+    <section class="cta-banner" aria-labelledby="cta-heading">
+      <div class="container">
+        <div class="cta-inner reveal">
+          <h2 id="cta-heading">Ready to take control<br />of your links?</h2>
+          <p>Join 120 000+ users who use SnapLink to manage, share, and analyze their links every day.</p>
+          <div class="cta-actions">
+            <a href="#hero" class="btn btn-primary btn-lg" id="cta-start">Start for Free</a>
+            <a href="#how-it-works" class="btn btn-ghost btn-lg" id="cta-learn">See How It Works</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="logo" aria-label="SnapLink Home">
+          <span class="logo-icon">⚡</span>
+          <span class="logo-text">Snap<span class="logo-accent">Link</span></span>
+        </a>
+        <p class="footer-tagline">Fast, smart, and open-source URL shortening for everyone.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-link" aria-label="GitHub" id="footer-github">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Twitter" id="footer-twitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Discord" id="footer-discord">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 00-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 00-5.487 0 12.36 12.36 0 00-.617-1.23A.077.077 0 008.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 00-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 00.031.055 20.03 20.03 0 005.993 2.98.078.078 0 00.084-.026c.462-.62.874-1.275 1.226-1.963a.074.074 0 00-.041-.104 13.201 13.201 0 01-1.872-.878.075.075 0 01-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 01.078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 01.079.009c.12.098.245.195.372.288a.075.075 0 01-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 00-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 00.084.028 19.963 19.963 0 006.002-2.981.076.076 0 00.032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 00-.031-.028z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#">Changelog</a></li>
+            <li><a href="#">Roadmap</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Developers</h4>
+          <ul>
+            <li><a href="#">API Docs</a></li>
+            <li><a href="#">FastAPI Guide</a></li>
+            <li><a href="#">Flask Guide</a></li>
+            <li><a href="#">GitHub</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <span>© 2026 SnapLink. Built with Flask + FastAPI + PostgreSQL.</span>
+        <span class="footer-love">Made with ❤️ for the web</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
