@@ -1,6 +1,6 @@
 from flask import request, redirect, render_template, url_for
-from app.forms import LinkForm
-from. import app
+from main.forms import LinkForm
+from __init__ import app
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
