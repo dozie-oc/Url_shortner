@@ -11,6 +11,7 @@ def index():
         if request.method == "POST":
             # Here you would typically shorten the URL and save it to the database
             return render_template('index.html', short_url=url)
+    return render_template('index.html', form=form)
 
 @pages.route('/traffic')
 def traffic():
