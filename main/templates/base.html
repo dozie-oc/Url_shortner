@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Shortener</title>
+    <title>{% block title %}URL Shortener{% endblock %}</title>
 </head>
 <body>
-    <h1>URL Shortener</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        {{ form.url.label }} {{ form.url(size=50) }}
-        {{ form.submit() }}
-    </form>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 </body>
+</html>

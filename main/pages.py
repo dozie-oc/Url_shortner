@@ -1,10 +1,16 @@
-from flask import Blueprint
+from flask import Blueprint, request, render_template
+from .forms import LinkForm
 
 pages =  Blueprint('pages', __name__)
 
 @pages.route('/')
 def index():
-    return "<h1>Welcome to the Home Page</h1>"
+    form = LinkForm()
+    if form.validate_on_submit():
+        url = form.url.data
+        if request.method == "POST":
+            # Here you would typically shorten the URL and save it to the database
+            return render_template('index.html', short_url=url)
 
 @pages.route('/traffic')
 def traffic():
