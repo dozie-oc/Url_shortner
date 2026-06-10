@@ -10,8 +10,8 @@ def index():
         url = form.url.data
         if request.method == "POST":
             # Here you would typically shorten the URL and save it to the database
-            return render_template('index.html', short_url=url)
-    return render_template('index.html', form=form)
+            pass
+    return render_template('index.html', form=form, short_url=url)
 
 @pages.route('/traffic')
 def traffic():
