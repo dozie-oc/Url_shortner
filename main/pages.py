@@ -3,7 +3,7 @@ from .forms import LinkForm
 
 pages =  Blueprint('pages', __name__)
 
-@pages.route('/')
+@pages.route('/', methods=['GET', 'POST'])
 def index():
     form = LinkForm()
     if form.validate_on_submit():
