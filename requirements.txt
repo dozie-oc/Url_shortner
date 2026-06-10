@@ -1,0 +1,9 @@
+Flask
+Flask-WTF
+WTForms
+SQLAlchemy
+python-dotenv
+validators
+hashids
+user-agents
+psycopg2-binary
