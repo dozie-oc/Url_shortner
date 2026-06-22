@@ -6,6 +6,7 @@
 <h1>URL Shortener</h1>
 
 <form method="POST">
+    {{form.hidden_tag()}}
     <label for="url">Enter URL</label>
     <input
         type="url"
@@ -18,9 +19,14 @@
 </form>
 
 {% if short_url %}
-    <h2>Short URL</h2>
-    <p>
-        <a href="{{ short_url }}">{{ short_url }}</a>
-    </p>
+    <div class="short-url-container success">
+        <h2>Your Short URL</h2>
+        <p>
+            <a href="{{ short_url }}" target="_blank">{{ short_url }}</a>
+        </p>
+        <small style="color: #64748b; margin-top: 1rem; display: block;">
+            Click the link to test <!-- Copied to clipboard automatically (optional JS) -->
+        </small>
+    </div>
 {% endif %}
 {% endblock %}
