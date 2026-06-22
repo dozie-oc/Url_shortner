@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %}Home{% endblock %}
+{% block styles %}
+<style>
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+{% endblock %}
 
 {% block content %}
 <h1>URL Shortener</h1>

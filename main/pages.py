@@ -48,4 +48,5 @@ def redirect_to_url(short_code):
 
 @pages.route('/traffic')
 def traffic():
-    return "<h1>Traffic Page</h1>"
+    urls = url.query.all()
+    return render_template('analytics.html', urls=urls)

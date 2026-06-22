@@ -10,7 +10,7 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
 
-    from .models import url, short_code
+    from .models import url, short_code, click
     from .pages import pages
 
     app.register_blueprint(pages, url_prefix='/')

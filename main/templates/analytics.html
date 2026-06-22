@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Analytics</h1>
+
+{% if urls %}
+    <table class="analytics-table">
+    <thead>
+        <tr>
+            <th>URL</th>
+            <th>Clicks</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for u in urls %}
+        <tr>
+            <td><a href="{{ u.url }}">{{ u.url }}</a></td>
+            <td>{{ u.clicks|length }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>No analytics available.</p>
+{% endif %}
+
+{% endblock %}

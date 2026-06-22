@@ -14,4 +14,10 @@ class short_code(db.Model):
     url = db.relationship('url', backref=db.backref('short_codes', lazy=True))
 
     def __repr__(self):
-        return f'<ShortCode {self.short_code}>'
+        return f'<ShortCode {self.code}>'
+
+class click(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, nullable=False)
+    short_code_id = db.Column(db.Integer, db.ForeignKey('short_code.id'), nullable=False)
+    short_code = db.relationship('short_code', backref=db.backref('clicks', lazy=True))
