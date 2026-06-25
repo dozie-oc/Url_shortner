@@ -1,9 +1,10 @@
 from flask import Blueprint, request, render_template, redirect, url_for
 from .forms import LinkForm
-from .models import url, short_code
+from .models import click, url, short_code
 from hashids import Hashids
 from . import db
 import logging
+import datetime
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -11,6 +12,12 @@ logger = logging.getLogger(__name__)
 hashid = Hashids(min_length=6)
 
 pages =  Blueprint('pages', __name__)
+
+def log_click(short_code):
+    short_code_entry = short_code.query.filter_by(code=code).first()
+    if short_code_entry:
+        click_entry = click(short_code_id=short_code_entry.id, timestamp=datetime.utcnow())
+        db.session.add(click_entry)
 
 @pages.route('/', methods=['GET', 'POST'])
 def index():
@@ -43,6 +50,8 @@ def redirect_to_url(short_code):
     if url_id:
         original_url = url.query.get(url_id[0])
         if original_url:
+            log_click(short_code)
+            db.session.commit()
             return redirect(original_url.url)
     return "<h1>URL not found</h1>"
 

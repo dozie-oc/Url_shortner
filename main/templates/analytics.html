@@ -15,7 +15,15 @@
         {% for u in urls %}
         <tr>
             <td><a href="{{ u.url }}">{{ u.url }}</a></td>
-            <td>{{ u.clicks|length }}</td>
+            <td>
+                {% if u.short_codes%}
+                    <a href="{{ url_for('pages.redirect_to_url', short_code=u.short_codes[0].code) }}" target="_blank">{{ u.short_codes[0].code }}</a>
+                {% else %}
+                    null
+                {% endif %}
+            </td>
+            <td>{{ u.short_codes[0].clicks|length }}</td>
+            
         </tr>
         {% endfor %}
     </tbody>
